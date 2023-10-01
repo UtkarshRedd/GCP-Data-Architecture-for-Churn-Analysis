@@ -3,6 +3,7 @@ import json
 import numpy as np
 from google.cloud import bigquery
 import hashlib
+
 def hello_gcs(event, context):
     """Triggered by a change to a Cloud Storage bucket.
     Args:
@@ -32,6 +33,9 @@ def hello_gcs(event, context):
     return 'SUCCESS'
 
 def ingest_customer_data(INPUT_PATH, OUTPUT_PATH):
+    '''
+    Function to Ingest Customer Data from Google Cloud Storage and load it to BigQuery
+    '''
     data = pd.read_json(INPUT_PATH, lines=True)
     df = pd.DataFrame()
     customer_name1 = []
@@ -82,6 +86,9 @@ def ingest_customer_data(INPUT_PATH, OUTPUT_PATH):
     return "SUCCESS customer data"
 
 def ingest_CDR_data(INPUT_PATH, OUTPUT_PATH):
+    '''
+    Function to Ingest Call Detail Record Data from Google Cloud Storage and load it to BigQuery
+    '''
     data = pd.read_json(INPUT_PATH, lines=True)
     source_no = []
     dest_no = []
@@ -123,6 +130,9 @@ def ingest_CDR_data(INPUT_PATH, OUTPUT_PATH):
     return "SUCCESS CDR data"
 
 def ingest_internet_data(INPUT_PATH, OUTPUT_PATH):
+    '''
+    Function to Ingest Internet Data from Google Cloud Storage and load it to BigQuery
+    '''
     data = pd.read_json(INPUT_PATH, lines=True)
     phone_no = []
     source_IP = []
@@ -161,13 +171,20 @@ def ingest_internet_data(INPUT_PATH, OUTPUT_PATH):
     return "SUCCESS internet data"
 
 def ingest_trans_data(INPUT_PATH, OUTPUT_PATH):
+    '''
+    Function to Ingest Transaction Data from Google Cloud Storage and load it to BigQuery
+    '''
     data = pd.read_json(INPUT_PATH, lines=True)
     data['transact_date'] = pd.to_datetime(data['transaction_date'])
     data.drop('transaction_date', axis = 1, inplace=True)
     #data.to_gbq(OUTPUT_PATH,  project_id='acn-in-cf-data-ggl-aca-c01-t04', if_exists='append')
     to_bq(data, OUTPUT_PATH)
     return "SUCCESS transaction data"
+
 def to_bq(df, TABLE_ID):
+    '''
+    Function to load data into BigQuery
+    '''
     client = bigquery.Client()
     job_config = bigquery.LoadJobConfig(write_disposition='WRITE_APPEND', autodetect = True)
     load_job = client.load_table_from_dataframe(df, TABLE_ID, job_config=job_config)  # Make an API request.

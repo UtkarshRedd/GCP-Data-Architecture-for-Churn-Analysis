@@ -1,3 +1,6 @@
+-- This file contains the SQL queries for feature engineering. Each question presented by the client has been answered with the respective SQL queries found below each question
+
+
 1. Date when the last 5th transaction was done by the customer.
 
 with view1 as(
