@@ -11,6 +11,11 @@ This repository contains partial code for the Churn Analysis Project I conducted
 2. For the data being transmitted through GCP Pub/Sub, a subscription was created to obtain messages from the particular topic, and a pipeline was built using GCP Dataflow to automatically load the data from the GCP Publisher to the respective BigQuery tables. This part of the architecture could not be made available in this GitHub repository.
 3. Extensive feature engineering was conducted to answer several specific questions provided by the client, which are available in the Queries.sql file. 
 4. The final tables loaded into GCP BigQuery were analyzed to predict customer churn and the main reasons behind high churn rates.
-5. The data is confidential and hence is not available. Therefore, a similar churn prediction model has been built on sample data for this repository.
+5. The data is confidential and hence is not available. Therefore, a similar churn prediction model has been built on sample data for this repository and is available in the Churn_analysis.ipynb notebook.
+6. Extensive experimentation was conducted using Logistic Regression, Random Forest and XGBoost. The following techniques were implemented in this experimentation: -
+-- Feature Engineering and Selection: The Recursive Feature Elimination (RFE) algorithm was employed for feature selection to select the top 15 features which are most relevant to the model.
+-- Model Ensembling: A voting classifier with XGBoost and Random Forest was implemented, and soft voting was employed to give predictions based on the probability scores of the two models.
+-- Post-Processing Thresholds: Instead of using a default threshold of 0.5, the threshold for classification was adjusted based on the F1-score, which seeks to balance precision and recall.
+-- Regularization: Included the reg_lambda hyperparameter which is L2 regularization term on weights. This was done to reduce overfitting of the model.
 
 Furthermore, the jupyter notebooks contain exploratory code for analyzing the different types of telecommunications data in this project.
